@@ -130,7 +130,10 @@ func fetchTableSchema(dbInfo DBInfo) []Table {
 }
 
 func generate(tables []Table) {
-	t, err := template.ParseFiles("./tables_desc_template.gtpl")
+	templateContent, err := Asset("tables_desc_template.gtpl")
+	checkError(err)
+
+	t, err := template.New("tables_desc_template").Parse(string(templateContent[:]))
 	checkError(err)
 
 	file, err := os.Create("schema_doc.md")
